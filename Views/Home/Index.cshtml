@@ -4,29 +4,53 @@
     ViewData["Title"] = "Power BI Embedded Report";
 }
 
-<section style="color:gray">
-    @{
-        var userName = User.FindFirstValue("name");
-        var email = User.FindFirstValue(ClaimTypes.Email);
+<div class="row">
+    <div class="col">
+        @{
+            var userName = User.FindFirstValue("name");
+            var email = User.FindFirstValue(ClaimTypes.Email);
+        }
 
-            <div class="mt-5">
-            @* <ul>
-                @foreach (var claim in User.Claims)
-                {
-                <li>@claim.Type - @claim.Value</li>
-                }
-                </ul> *@
+        <span>Name: @userName</span><br />
+        @* Enabled optional claims in app registration in order to get email address *@
+        <span>Email: @email</span>
+    </div>
+</div>
 
-                <span>Name: @userName</span><br />
+<div class="row">
+    <section id="report-container" class="col mt-3">
+    </section>
+</div>
 
-            @* Enabled optional claims in app registration in order to get email address *@
-                <span>Email: @email</span>
-            </div>
-    }
-</section>
+<div class="row">
+    <section class="col mt-3">
+        <table class="table table-striped table-bordered table-condensed table-hover">
+            <tr>
+                <th>ClaimType</th>
+                <th>Value</th>
+            </tr>
 
-<section id="report-container" class="embed-container mt-5">
-</section>
+            @foreach (var claim in User.Claims)
+            {
+                <tr>
+                    @{
+                        if (claim.Type == "roles" || claim.Type ==
+                    "http://schemas.microsoft.com/ws/2008/06/identity/claims/role")
+                        {
+                            <td><b>@claim.Type</b></td>
+                        }
+                        else
+                        {
+                            <td>@claim.Type</td>
+                        }
+                    }
+
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </table>
+    </section>
+</div>
 
 <!-- Used to display report embed error messages -->
 <section class="error-container m-5">
