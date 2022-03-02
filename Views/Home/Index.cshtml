@@ -5,15 +5,17 @@
 }
 
 <div class="row">
-    <div class="col">
+    <div class="col-3">
         @{
             var userName = User.FindFirstValue("name");
-            var email = User.FindFirstValue(ClaimTypes.Email);
+            var email = User.FindFirstValue("email");
+            var role = User.FindFirstValue("roles");
         }
 
-        <span>Name: @userName</span><br />
+        <span class="d-block bg-info text-white pl-2 pr-2"><strong>Name:</strong> @userName</span>
         @* Enabled optional claims in app registration in order to get email address *@
-        <span>Email: @email</span>
+        <span class="d-block bg-light text-dark pl-2 pr-2"><strong>Email:</strong> @email</span>
+        <span class="d-block bg-warning text-dark pl-2 pr-2"><strong>Role:</strong> @role</span>
     </div>
 </div>
 

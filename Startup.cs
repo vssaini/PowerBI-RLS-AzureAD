@@ -11,6 +11,7 @@ namespace PowerBiRls
     using Microsoft.AspNetCore.Mvc.Authorization;
     using Microsoft.Identity.Web;
     using Microsoft.Identity.Web.UI;
+    using System.IdentityModel.Tokens.Jwt;
 
     public class Startup
     {
@@ -30,6 +31,12 @@ namespace PowerBiRls
             // Register AadService and PbiEmbedService for dependency injection
             services.AddScoped(typeof(AadService))
                     .AddScoped(typeof(PbiEmbedService));
+
+            // This is required to be instantiated before the OpenIdConnectOptions starts getting configured.
+            // By default, the claims mapping will map claim names in the old format to accommodate older SAML applications.
+            // 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role' instead of 'roles'
+            // This flag ensures that the ClaimsIdentity claims collection will be built from the claims in the token
+            JwtSecurityTokenHandler.DefaultMapInboundClaims = false;
 
             services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd", subscribeToOpenIdConnectMiddlewareDiagnosticsEvents: true);
 
