@@ -1,6 +1,29 @@
+@using System.Security.Claims
+
 @{
     ViewData["Title"] = "Power BI Embedded Report";
 }
+
+<section style="color:gray">
+    @{
+        var userName = User.FindFirstValue("name");
+        var email = User.FindFirstValue(ClaimTypes.Email);
+
+            <div class="mt-5">
+            @* <ul>
+                @foreach (var claim in User.Claims)
+                {
+                <li>@claim.Type - @claim.Value</li>
+                }
+                </ul> *@
+
+                <span>Name: @userName</span><br />
+
+            @* Enabled optional claims in app registration in order to get email address *@
+                <span>Email: @email</span>
+            </div>
+    }
+</section>
 
 <section id="report-container" class="embed-container mt-5">
 </section>
