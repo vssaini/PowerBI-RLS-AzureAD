@@ -1,8 +1,3 @@
-// ----------------------------------------------------------------------------
-// Copyright (c) Microsoft Corporation.
-// Licensed under the MIT license.
-// ----------------------------------------------------------------------------
-
 namespace PowerBiRls.Controllers
 {
     using PowerBiRls.Models;

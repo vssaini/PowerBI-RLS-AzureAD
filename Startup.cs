@@ -6,11 +6,11 @@ namespace PowerBiRls
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Hosting;
-    using Microsoft.AspNetCore.Authentication;
-    using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+    using Microsoft.Extensions.Hosting;    
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc.Authorization;
+    using Microsoft.Identity.Web;
+    using Microsoft.Identity.Web.UI;
 
     public class Startup
     {
@@ -28,8 +28,10 @@ namespace PowerBiRls
             services.AddScoped(typeof(AadService))
                     .AddScoped(typeof(PbiEmbedService));
 
-            services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
-                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+            // services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+            //     .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+
+            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
 
             services.AddControllersWithViews(options =>
             {
@@ -37,7 +39,7 @@ namespace PowerBiRls
                     .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-            });
+            }).AddMicrosoftIdentityUI();
 
             // Loading appsettings.json in C# Model classes
             services.Configure<AzureAd>(Configuration.GetSection("AzureAd"))
